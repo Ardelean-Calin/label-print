@@ -19,7 +19,7 @@
         # Script to print labels
         printLabelScript = pkgs.writeScriptBin "print-label" ''
           #!${pkgs.bash}/bin/bash
-          ${pkgs.python312}/bin/python ${./print_label.py} "$@"
+          ${pkgs.uv}/bin/uv run ${./print_label.py} "$@"
         '';
       in {
         devShells.default = pkgs.mkShell {
