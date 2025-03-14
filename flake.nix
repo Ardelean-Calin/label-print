@@ -19,16 +19,38 @@
         # Script to print labels
         printLabelScript = pkgs.writeScriptBin "print-label" ''
           #!${pkgs.bash}/bin/bash
-          if [ $# -lt 2 ]; then
-            echo "Usage: print-label TEXT PRINTER_PATH"
+          DRY_RUN=""
+          
+          # Parse arguments
+          while [[ $# -gt 0 ]]; do
+            case "$1" in
+              --dry-run)
+                DRY_RUN="--dry-run"
+                shift
+                ;;
+              *)
+                if [ -z "$TEXT" ]; then
+                  TEXT="$1"
+                elif [ -z "$PRINTER_PATH" ]; then
+                  PRINTER_PATH="$1"
+                else
+                  echo "Too many arguments"
+                  exit 1
+                fi
+                shift
+                ;;
+            esac
+          done
+          
+          if [ -z "$TEXT" ] || ([ -z "$PRINTER_PATH" ] && [ -z "$DRY_RUN" ]); then
+            echo "Usage: print-label [--dry-run] TEXT [PRINTER_PATH]"
+            echo "  --dry-run    Generate the label image but don't print it"
             echo "Example: print-label \"Hello World\" /dev/usb/lp0"
+            echo "Example: print-label --dry-run \"Hello World\""
             exit 1
           fi
           
-          TEXT="$1"
-          PRINTER_PATH="$2"
-          
-          ${pythonEnv}/bin/python ${self}/print_label.py "$TEXT" "$PRINTER_PATH"
+          ${pythonEnv}/bin/python ${self}/print_label.py "$TEXT" "$PRINTER_PATH" $DRY_RUN
         '';
         
       in {
@@ -42,6 +64,7 @@
           shellHook = ''
             echo "Development environment loaded with typst and brother_ql"
             echo "Use 'print-label \"Your text\" /path/to/printer' to print a label"
+            echo "Use 'print-label --dry-run \"Your text\"' to preview a label without printing"
           '';
         };
       }
