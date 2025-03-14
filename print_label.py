@@ -100,6 +100,7 @@ def print_label(text, printer_path=None, dry_run=False):
 
 if __name__ == "__main__":
     # Check for dry-run flag
+    # Can we use a proper library for this? AI!
     dry_run = False
     args = sys.argv[1:]
     
@@ -115,6 +116,6 @@ if __name__ == "__main__":
         print("       python print_label.py TEXT --dry-run")
         sys.exit(1)
     
-    text = args[0]
-    printer_path = args[1] if not dry_run else None
+    text = args[1]
+    printer_path = args[2] if not dry_run else None
     print_label(text, printer_path, dry_run)
