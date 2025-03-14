@@ -15,9 +15,15 @@
       system: let
         pkgs = nixpkgs.legacyPackages.${system};
 
+        fontFiles = pkgs.symlinkJoin {
+          name = "fonts";
+          paths = [ ./fonts ];
+        };
+
         # Script to print labels
         printLabelScript = pkgs.writeScriptBin "print-label" ''
-          #!${pkgs.bash}/bin/bash
+          #!/usr/bin/env bash
+          export PATH=$PATH:${fontFiles}/fonts
           ${pkgs.uv}/bin/uv run ${./print_label.py} "$@"
         '';
       in {
