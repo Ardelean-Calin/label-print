@@ -24,20 +24,21 @@ def print_label(text, printer_path=None, dry_run=False):
         tmp_path = tmp_file.name
     
     try:
-        # Generate a PNG with the text using typst
-        typst_content = f"""
-        #set page(width: 62mm, height: 12mm, margin: 1mm)
-        #set text(font: "Iosevka Aile", size: 10pt)
-        #align(center + horizon)[
-          #text(weight: "bold")[{text}]
-        ]
-        """
+        # Use the template.typ file with the text as input
+        template_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "template.typ")
         
-        typst_file = tempfile.NamedTemporaryFile(suffix='.typ', delete=False)
-        typst_file.write(typst_content.encode('utf-8'))
-        typst_file.close()
+        # Create a temporary file for the text content
+        text_file = tempfile.NamedTemporaryFile(suffix='.txt', delete=False)
+        text_file.write(text.encode('utf-8'))
+        text_file.close()
         
-        subprocess.run(["typst", "compile", typst_file.name, tmp_path], check=True)
+        # Compile using the template and text input
+        subprocess.run([
+            "typst", "compile", 
+            template_path, 
+            tmp_path,
+            "--input", f"text={text_file.name}"
+        ], check=True)
         
         if dry_run:
             # In dry-run mode, copy the image to a more permanent location and open it
@@ -90,8 +91,8 @@ def print_label(text, printer_path=None, dry_run=False):
         # Clean up temporary files
         if os.path.exists(tmp_path):
             os.unlink(tmp_path)
-        if os.path.exists(typst_file.name):
-            os.unlink(typst_file.name)
+        if 'text_file' in locals() and os.path.exists(text_file.name):
+            os.unlink(text_file.name)
 
 if __name__ == "__main__":
     # Check for dry-run flag
