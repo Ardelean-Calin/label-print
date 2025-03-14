@@ -41,7 +41,7 @@ def print_label(text, printer_path=None, dry_run=False):
             tmp_path,
             "--font-path",
             font_path,
-            "--input", f"text={text_file.name}"
+            "--input", f"text={text}"
         ], check=True)
         
         if dry_run:
@@ -102,6 +102,7 @@ def print_label(text, printer_path=None, dry_run=False):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Print labels using brother_ql')
     parser.add_argument('text', help='Text to print on the label')
+    # Make printer_path be `/dev/usb/lp0` if no path is specified. Also make it of type `--printer /dev/usb/lp0` AI!
     parser.add_argument('printer_path', nargs='?', help='Path to the printer device')
     parser.add_argument('--dry-run', action='store_true', help='Generate preview without printing')
     
