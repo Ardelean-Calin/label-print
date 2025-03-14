@@ -63,6 +63,7 @@
           buildInputs = [
             pythonEnv
             pkgs.typst
+            pkgs.uv
             printLabelScript
           ];
 
