@@ -33,7 +33,7 @@ def print_label(text, printer_path=None, dry_run=False):
     
     try:
         # Use the template.typ file with the text as input
-        template_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "template.typ")
+        template_path = os.environ.get("TEMPLATE_PATH")
         font_path = os.environ.get("FONT_PATH")
 
         # Create a temporary file for the text content

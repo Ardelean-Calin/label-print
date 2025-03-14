@@ -25,6 +25,7 @@
           #!/usr/bin/env bash
           export PATH=$PATH:${fontFiles}/fonts
           export FONT_PATH=${fontFiles}/fonts
+          export TEMPLATE_PATH=${./template.typ}
           ${pkgs.uv}/bin/uv run ${./print_label.py} "$@"
         '';
       in {
