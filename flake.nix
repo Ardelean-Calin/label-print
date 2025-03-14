@@ -24,6 +24,7 @@
         printLabelScript = pkgs.writeScriptBin "print-label" ''
           #!/usr/bin/env bash
           export PATH=$PATH:${fontFiles}/fonts
+          export FONT_PATH=${fontFiles}/fonts
           ${pkgs.uv}/bin/uv run ${./print_label.py} "$@"
         '';
       in {
