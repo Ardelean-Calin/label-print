@@ -44,9 +44,9 @@ def print_label(text, printer_path=None, dry_run=False):
         ], check=True)
         
         if dry_run:
-            # In dry-run mode, copy the image to a more permanent location and open it
-            # Actually create this file in a temporary directory. AI!
-            preview_path = os.path.expanduser("~/label_preview.png")
+            # In dry-run mode, copy the image to a temporary directory and open it
+            temp_dir = tempfile.gettempdir()
+            preview_path = os.path.join(temp_dir, "label_preview.png")
             shutil.copy(tmp_path, preview_path)
             print(f"Label preview generated at {preview_path}")
             
