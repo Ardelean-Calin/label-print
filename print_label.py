@@ -8,6 +8,7 @@ import os
 import tempfile
 import subprocess
 import shutil
+import argparse
 from brother_ql.conversion import convert
 from brother_ql.backends.helpers import send
 from brother_ql.raster import BrotherQLRaster
@@ -99,23 +100,14 @@ def print_label(text, printer_path=None, dry_run=False):
             os.unlink(text_file.name)
 
 if __name__ == "__main__":
-    # Check for dry-run flag
-    # Can we use a proper library for this? AI!
-    dry_run = False
-    args = sys.argv[1:]
+    parser = argparse.ArgumentParser(description='Print labels using brother_ql')
+    parser.add_argument('text', help='Text to print on the label')
+    parser.add_argument('printer_path', nargs='?', help='Path to the printer device')
+    parser.add_argument('--dry-run', action='store_true', help='Generate preview without printing')
     
-    if "--dry-run" in args:
-        dry_run = True
-        args.remove("--dry-run")
+    args = parser.parse_args()
     
-    if dry_run and len(args) != 1:
-        print("Usage for dry run: python print_label.py TEXT --dry-run")
-        sys.exit(1)
-    elif not dry_run and len(args) != 2:
-        print("Usage: python print_label.py TEXT PRINTER_PATH")
-        print("       python print_label.py TEXT --dry-run")
-        sys.exit(1)
+    if not args.dry_run and not args.printer_path:
+        parser.error("printer_path is required unless --dry-run is specified")
     
-    text = args[1]
-    printer_path = args[2] if not dry_run else None
-    print_label(text, printer_path, dry_run)
+    print_label(args.text, args.printer_path, args.dry_run)
