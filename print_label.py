@@ -26,6 +26,7 @@ def print_label(text, printer_path=None, dry_run=False):
     try:
         # Use the template.typ file with the text as input
         template_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "template.typ")
+        font_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "fonts")
         
         # Create a temporary file for the text content
         text_file = tempfile.NamedTemporaryFile(suffix='.txt', delete=False)
@@ -37,11 +38,14 @@ def print_label(text, printer_path=None, dry_run=False):
             "typst", "compile", 
             template_path, 
             tmp_path,
+            "--font-path",
+            font_path,
             "--input", f"text={text_file.name}"
         ], check=True)
         
         if dry_run:
             # In dry-run mode, copy the image to a more permanent location and open it
+            # Actually create this file in a temporary directory. AI!
             preview_path = os.path.expanduser("~/label_preview.png")
             shutil.copy(tmp_path, preview_path)
             print(f"Label preview generated at {preview_path}")
