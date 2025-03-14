@@ -102,13 +102,9 @@ def print_label(text, printer_path=None, dry_run=False):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Print labels using brother_ql')
     parser.add_argument('text', help='Text to print on the label')
-    # Make printer_path be `/dev/usb/lp0` if no path is specified. Also make it of type `--printer /dev/usb/lp0` AI!
-    parser.add_argument('printer_path', nargs='?', help='Path to the printer device')
+    parser.add_argument('--printer', dest='printer_path', default='/dev/usb/lp0', help='Path to the printer device (default: /dev/usb/lp0)')
     parser.add_argument('--dry-run', action='store_true', help='Generate preview without printing')
-    
+
     args = parser.parse_args()
-    
-    if not args.dry_run and not args.printer_path:
-        parser.error("printer_path is required unless --dry-run is specified")
-    
+
     print_label(args.text, args.printer_path, args.dry_run)
