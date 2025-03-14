@@ -1,5 +1,5 @@
 #let content = sys.inputs.text
-#let font-name = "Iosevka Aile"
+#let font-name = "Iosevka NF"
 #let paper-width = 12mm
 
 // Function to calculate appropriate font size based on text length
