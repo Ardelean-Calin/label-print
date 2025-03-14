@@ -1,5 +1,11 @@
-# Make this use uv's script mode instead AI!
-#!/usr/bin/env python3
+# /// script
+# requires-python = ">=3.12"
+# dependencies = [
+#   "brother_ql",
+# ]
+# [tool.uv.sources]
+# brother_ql = { git = "https://github.com/Ardelean-Calin/brother_ql" }
+# ///
 """
 Script to print labels using brother_ql
 """
@@ -72,7 +78,7 @@ def print_label(text, printer_path=None, dry_run=False):
                 qlr=qlr,
                 images=[tmp_path],
                 label='12',
-                rotate='0',
+                rotate='auto',
                 threshold=70,
                 dither=False,
                 compress=False,

@@ -64,6 +64,7 @@
             pythonEnv
             pkgs.typst
             pkgs.uv
+            pkgs.zlib
             printLabelScript
           ];
 
