@@ -1,3 +1,4 @@
+# Make this use uv's script mode instead AI!
 #!/usr/bin/env python3
 """
 Script to print labels using brother_ql
